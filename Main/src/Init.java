@@ -1,34 +1,25 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Init {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         final String FILENAME = "Main/resources/db.txt";
-        File file = new File(FILENAME);
-        Scanner scanner = new Scanner(file);
-        String line;
 
-        Database db = new Database();
-        Scanner inputConsole = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            line = scanner.nextLine();
-            System.out.println(line);
-        }
+        Database db = new Database(FILENAME);
+        Init init = new Init();
         do {
             System.out.print(" >_ ");
         }
-        while (doCommand(inputConsole, db));
+        while (init.doCommand(db));
         System.out.println("Goodbye!");
     }
 
-    private static boolean doCommand(Scanner input, Database db) {
-        String command = input.nextLine();
+    private boolean doCommand(Database db) {
+        String command = new Scanner(System.in).nextLine();
 
         switch (command) {
             case "show":
-                db.show();
+                System.out.println("total: " + db.show());
                 break;
             case "create":
                 Scanner scanner = new Scanner(System.in);
@@ -56,45 +47,3 @@ public class Init {
     }
 }
 
-class Database {
-    private int[] id = new int[100];
-    private String[] name = new String[100];
-    private int[] age = new int[100];
-    private int count = 0;
-
-    Database() {
-        try {
-            Scanner scanner = new Scanner(new File("Main/resources/db.txt"));
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] tempArray = line.split(";");
-                int countTempArray = 0;
-                id[count] = Integer.parseInt(tempArray[countTempArray++]);
-                name[count] = tempArray[countTempArray++];
-                age[count] = Integer.parseInt(tempArray[countTempArray]);
-                count++;
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error! Couldn't find the file database.");
-        }
-    }
-
-    int getCount() {
-        return count;
-    }
-
-    void create(String name, int age) {
-        id[count] = count;
-        this.name[count] = name;
-        this.age[count] = age;
-        System.out.println("Client has been added");
-        count++;
-    }
-
-    void show() {
-        System.out.println("Function 'show' has been called...");
-        for (int i = 0; i < count; i++) {
-            System.out.println(id[i] + " " + name[i] + ' ' + age[i]);
-        }
-    }
-}
