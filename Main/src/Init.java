@@ -35,7 +35,7 @@ public class Init {
                 }
                 break;
             case "count":
-                System.out.println(db.getCount());
+                System.out.println(db.getLastID());
                 break;
             case "exit":
                 return false;
